@@ -2,29 +2,29 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # your default branch
-
+    branches: ["main"]
+     
 permissions:
   contents: write
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # upgraded from v2
-
-      # Optional: setup Node.js if you're using npm/yarn build steps
-      # Remove if you're just using plain HTML/CSS
-      # - name: Setup Node.js (optional)
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-
-      - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./Project_1  # 👈 specify the folder where index.html lives
+    deploy:
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+  
+        - name: Setup GitHub Pages
+          uses: actions/configure-pages@v3
+  
+        - name: Install upload-artifact (required workaround)
+          uses: actions/upload-artifact@v3  # 👈 Explicitly added to fix the error
+  
+        - name: Upload site from Project_1 folder
+          uses: actions/upload-pages-artifact@v2
+          with:
+            path: './Project_1'
+  
+        - name: Deploy to GitHub Pages
+          uses: actions/deploy-pages@v2
