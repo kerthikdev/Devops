@@ -2,10 +2,10 @@ name: Deploy Portfolio to GitHub Pages
 
 on:
   push:
-    branches: ["main"]  # Or your default branch
+    branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -18,16 +18,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup GitHub Pages
-      uses: actions/configure-pages@v3
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v3
 
-    - name: Upload static files from Project_1
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: './Project_1'  # 👈 this is the important fix
+      - name: Install upload-artifact (required workaround)
+        uses: actions/upload-artifact@v3  # 👈 Explicitly added to fix the error
 
-    - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v2
+      - name: Upload site from Project_1 folder
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './Project_1'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
