@@ -1,33 +1,30 @@
-name: Deploy Portfolio to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main  # your default branch
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3  # upgraded from v2
 
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v3
+      # Optional: setup Node.js if you're using npm/yarn build steps
+      # Remove if you're just using plain HTML/CSS
+      # - name: Setup Node.js (optional)
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
 
-      - name: Upload site from Project_1 folder
-        uses: actions/upload-pages-artifact@v2
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: './Project_1'
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Project_1  # 👈 specify the folder where index.html lives
