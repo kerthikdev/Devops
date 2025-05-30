@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -23,9 +23,6 @@ jobs:
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v3
-
-      - name: Install upload-artifact (required workaround)
-        uses: actions/upload-artifact@v3  # 👈 Explicitly added to fix the error
 
       - name: Upload site from Project_1 folder
         uses: actions/upload-pages-artifact@v2
